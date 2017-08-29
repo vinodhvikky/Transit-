@@ -1,0 +1,360 @@
+<form (mousemove)="hover($event)" [formGroup]="journeyForm" class="form-horizontal" role="form">
+            <div style="width: 100%; margin-bottom: 20px; color: white;">
+                SELECT CITY
+                <select style="margin-left: 15px;" class="selectroles"
+                data-style="btn-secondary" formControlName="city"
+                data-width="auto"
+                id="simple-select"
+                required="required" (ngModelChange)="onChange($event)">
+                <option *ngFor="let item of cities" [ngValue]="item.id">
+                {{ item.name | uppercase }}
+                </option>
+                </select>
+            </div>
+<div class="row">
+    <div class="col-lg-4  widget-container" >
+        <section class="widget" widget>
+            <div class="widget-body">
+
+                    <fieldset>
+
+                        <div class="form-group row" style="margin-bottom: 8px;">
+                            <label for="normal-field" class="col-md-2  col-form-label ">Start </label>
+                            <!-- <span class="tag tag-success "  style="font-size: 16px;">Start</span> -->
+
+                            <div class="col-md-10 ">
+                                <input [value]="journeyForm.value.start" (input)="start = $event.target.value" (keypress)="value(start)" (focus)="focusFunction(true)" formControlName="start" type="text" id="normal-field" class="form-control" placeholder="Start" style="padding: 2% 8%;">
+                            </div>
+                        </div>
+                        <!-- <span style="margin-left: 61%;">
+                            <img src="assets/swap.png" alt="" width="20" height="20">
+                        </span> -->
+
+                        <div class="form-group row">
+                            <label for="hint-field" class="col-md-2 col-form-label "> End </label>
+                            <!-- <span class="tag tag-danger" style="font-size: 16px;margin-right: 7px; ">End</span> -->
+
+                            <div class="col-md-10 ">
+                                <input  (focus)="focusFunction(false)" formControlName="end" type="text" id="hint-field" class="form-control" placeholder="End" style="padding: 2% 8%;">
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <div class="col-md-4 col-form-label">
+                                <select formControlName="day" class="form-control"  name="day" id="day" style="background-color: #c6c3c2; border: none; color: #808000;border-radius: 10px; outline: none;padding: 2% 8%;">
+                                    <option *ngFor="let item of dayOptions" [ngValue]="item.id">
+                                        {{ item.day }}
+                                    </option>
+                                </select>
+
+                            </div>
+                            <div class="col-md-3 col-form-label">
+                                <select formControlName="hour" class="form-control" name="time" id="time" style="background-color: #c6c3c2; border: none; color: #808000;border-radius: 10px; outline: none;padding: 2% 8%;">
+                                    <option *ngFor="let item of hourOptions" [ngValue]="item">
+                                        {{ item }}
+                                    </option>
+                                 </select>
+                            </div>
+
+                            <div class="col-md-3 col-form-label">
+                                <select formControlName="minutes" class="form-control" name="time" id="time" style="background-color: #c6c3c2; border: none; color: #808000;border-radius: 10px; outline: none;padding: 2% 8%;">
+                                    <option *ngFor="let item of minuteOptions" [ngValue]="item">
+                                        {{ item }}
+                                    </option>
+                                </select>
+                            </div>
+                            <div class="col-md-2 col-form-label ">
+                                <button class=" gobutton btn btn-secondary  pull-right" (click)="getTransit()">GO</button>
+                            </div>
+                        </div>
+                        <span>CST Time Zone</span>
+                    </fieldset>
+
+
+                    <!-- <datetime [(ngModel)]="date" name="datetime" formControlName="dateTime" (change)="dataTime($event.target.value)" id="datetimepicker2i"></datetime> -->
+
+
+            </div>
+
+        </section>
+
+        <section>
+            <div *ngIf="showSuggesion" class="widget-body" style="width: 70%;margin-left: 34px;margin-top: 66px;margin-left: 34;">
+                <fieldset>
+                    <h2 class="suggestion">Our CityPost transit app is in final stages of development.<br/>
+                        To see a demo:<br/><br/>
+
+                        1. Touch a start point on the map.<br/><br/>
+
+                        2. Touch an end point on the map.<br/><br/>
+
+                        3. Touch “GO” button above<br/><br/>
+
+                        4. Touch and interact with the suggestions to preview route.
+                    </h2>
+                </fieldset>
+            </div>
+        </section>
+
+    <!-- <section class="widget" widget *ngIf="journeyDetails">
+        <div class="widget-body" *ngFor="let t of travelMode">
+            <div class="walk walk_hover" *ngIf="t.mode === 'WALKING'" (click)="showGooglePolylines('WALKING')">
+                <a>
+                    <span>
+                        <img src="assets/walk.png" alt="" width="20" height="20">
+                    </span>
+                    <span>
+                        <span >
+                            Walk {{t.distance}} {{t.duration}}
+                        </span>
+                    </span>
+                </a>
+            </div>
+
+            <div class="walk div_hover"  *ngIf="t.mode === 'BICYCLING'" (click)="showGooglePolylines('BICYCLING')">
+                <a>
+                    <span>
+                        <img src="assets/sport.png" alt="" width="20" height="20">
+                    </span>
+                    <span>
+                        Cycle {{t.distance}} {{t.duration}}
+                    </span>
+                </a>
+            </div>
+
+            <div class="walk drive_hover"  *ngIf="t.mode === 'DRIVING'" (click)="showGooglePolylines('DRIVING')">
+                <a>
+                    <span>
+                        <img src="assets/car.png" alt="" width="20" height="20">
+                    </span>
+                    <span>
+                        Drive {{t.distance}} {{t.duration}}
+                    </span>
+                </a>
+            </div>
+        </div>
+    </section> -->
+
+    <section  style="height: 800px; overflow:scroll;" class="widget" widget *ngIf="journeyDetails">
+      <div class="widget-body">
+            <h5>
+				Suggested
+			</h5>
+            <accordion *ngIf="journeyDetails" [closeOthers]="true" class="mb-lg show" id="accordion">
+                <div *ngFor="let plan of journeyDetails; let i = index;" style="margin-top:5px">
+
+                    <accordion-group>
+                        <div (click)="showPolylines(plan)" accordion-heading style="font-size: 12px;">
+                            <!-- <span>{{plan.duration | SecToMin}}</span> -->
+                            <div style="display: inline-block;">
+                                <p style="padding-right: 10px;text-align: center;font-size: 20px;margin-left: -25px;font-weight: bold;">{{plan.duration | SecToMin}}</p>
+                            </div>
+                            <div style="float: left;margin-top: 20px;">Mins</div>
+                            <span *ngFor="let section of plan.sections;let j = index" >
+                                <span *ngIf="section.type=='public_transport' && section.display_informations.commercial_mode === 'Bus' ">
+                                    <span *ngIf="j!=section.firstindex" class="fa fa-circle" id="point"></span>
+                                    <span class="buslabel">
+                                        <img *ngIf="section.type=='public_transport' && section.display_informations.commercial_mode=='Bus'" src="assets/Bus.png" alt="" width="20" height="20"/>
+                                        {{section.display_informations.label}}
+                                    </span>
+
+                                </span>
+
+                                <span *ngIf="section.type=='public_transport' && ( section.display_informations.commercial_mode === 'Metro' || section.display_informations.commercial_mode === 'Train') ">
+                                    <span *ngIf="j!=section.firstindex" class="fa fa-circle" id="point"></span>
+                                    <div id="circle" style="display: inline-block; background-color: {{section.display_informations.label}};">
+                                        <p style="text-align: center;font-size: 17px;font-weight: bold;">{{section.display_informations.label.charAt(0).toUpperCase()}}</p>
+                                    </div>
+                                </span>
+                            </span>
+                            <div>
+                                <p style="float: right;margin-top: -28px;">Arrival</p>
+                            </div>
+                            <span class="pull-right" style="font-weight: bold;margin-top: -10px;font-size: 15px;">
+
+                                {{plan.arrival_date_time  | DatePipe: "LT"}}
+                            </span>
+                            <!-- <i class="fa fa-angle-down float-xs-right"></i> -->
+                        </div>
+                        <div class="list-group list-group-lg">
+                            <accordion class="mb-lg show" id="accordionsection">
+                            <a *ngFor="let section of plan.sections">
+                                <accordion-group>
+                                <div accordion-heading style="font-size: 12px;">
+                                    <span class="list-group-item"  (click)="polyMap(section.geojson, section)">
+                                        <div style="width: 21%; float: left;">
+                                            <span *ngIf="section.mode === 'walking' || section.transfer_type === 'walking'">
+                                                <img width="20" height="20" src="assets/walk.png" alt="" />
+                                            </span>
+
+
+                                            <span *ngIf="section.type=='public_transport' && section.display_informations.commercial_mode === 'Bus' ">
+                                                <span class="buslabel">
+                                                    <img *ngIf="section.type=='public_transport' && section.display_informations.commercial_mode=='Bus'" src="assets/Bus.png" alt="" width="20" height="20"/>
+                                                    {{section.display_informations.label}}
+                                                    <!-- <span *ngIf="section.stop_date_times">
+                                                        <span *ngFor="let b of section.stop_date_times">
+                                                            <div class="pull-left">
+                                                                Station Name {{b.stop_point.label}}
+                                                            </div>
+                                                            <div class="pull-right">
+                                                                Arrival {{b.arrival_date_time | DatePipe: "LT" }}
+                                                            </div>
+                                                        </span>
+                                                    </span> -->
+                                                </span>
+                                            </span>
+
+                                            <span *ngIf="section.type=='public_transport' && ( section.display_informations.commercial_mode === 'Metro' || section.display_informations.commercial_mode === 'Train') ">
+                                                <!-- <span *ngIf="j!=section.firstindex" class="fa fa-circle" id="point"></span> -->
+                                                <div id="circle" style="display: inline-block; background-color: {{section.display_informations.label}};">
+                                                    <p style="text-align: center;font-size: 17px;font-weight: bold;">{{section.display_informations.label.charAt(0).toUpperCase()}}</p>
+                                                    <!-- <span *ngIf="section.stop_date_times">
+                                                        <span *ngFor="let m of section.stop_date_times">
+                                                            <div class="pull-left">
+                                                                Station Name {{m.stop_point.label}}
+                                                            </div>
+                                                            <div class="pull-right">
+                                                                Arrival {{m.arrival_date_time | DatePipe: "LT" }}
+                                                            </div>
+                                                        </span>
+                                                    </span> -->
+                                                </div>
+                                            </span>
+                                        </div>
+
+
+
+                                        <div style="width:65%; display: inline-block; float:left;">
+                                            <span *ngIf="section.to  && section.type != 'waiting'">
+                                                <span style="font-weight:bold">To</span>
+                                                <span>{{section.to.name}}</span>
+                                            </span>
+                                            <span *ngIf="section.type == 'waiting'">
+                                                <span>Waiting Duration</span>
+                                            </span>
+                                        </div>
+                                        <!-- <div style="display: inline-block;" *ngIf="section.type == 'waiting'">
+                                            <span>
+                                                <span style="font-weight:bold">Waiting Duration</span>
+                                            </span>
+                                        </div> -->
+                                        <!-- <div style="display: inline-block;">
+                                            <span>
+                                                <p style="text-align: center;font-size: 20px;font-weight: bold;">{{section.duration | SecToMin}}</p>
+                                            </span>
+                                            <div style="">Mins</div>
+                                        </div> -->
+
+                                        <div style="width:10%; display: inline-block; ">
+                                             <span>
+                                                {{section.duration | SecToMin}} Mins
+                                            </span>
+                                        </div>
+                                    </span>
+                                </div>
+                                <span *ngIf="section.stop_date_times">
+                                    <div *ngFor="let stop of section.stop_date_times; let i = index" >
+                                        <!-- <div *ngIf="i==0 || i==section.stop_date_times.length-1"> -->
+                                            <span style="width:85%;" [ngClass]="i==0 || i==section.stop_date_times.length-1 ? 'startstation': 'leftpadding'">
+                                                 {{stop.stop_point.label}}
+                                            </span>
+                                            <span [ngClass]="i==0 || i==section.stop_date_times.length-1 ? 'startstation': 'hide'" >
+                                                {{stop.arrival_date_time | DatePipe: "LT" }}
+                                            </span>
+                                        <!-- </div> -->
+
+                                        <!-- <div *ngIf="i!=0 || i!=section.stop_date_times.length-1"> -->
+                                            <!-- <span style="width:85%" class="pull-left">
+                                                 {{stop.stop_point.label}}
+                                            </span> -->
+                                        <!-- </div> -->
+                                    </div>
+                                </span>
+                                </accordion-group>
+                                <!-- <span style="float:right">{{section.duration | SecToMin}} Mins</span> -->
+                                <!-- <div>
+                                    <p style="float: right;margin-top: -28px;">Arrival</p>
+                                </div> -->
+
+                              </a>
+                            </accordion>
+                        </div>
+                    </accordion-group>
+                </div>
+            </accordion>
+        </div>
+    </section>
+    </div>
+
+
+    <div class="col-lg-8  map-container">
+
+        <sebm-google-map
+                [fitBounds]="mapBounds"
+                [latitude]="lat" [longitude]="lng"
+                [zoom]="zoom"
+                [disableDefaultUI]="true"
+                [zoomControl]="false"
+                [streetViewControl]="false"
+                [disableDoubleClickZoom]="true"
+                class="content-map" (mapClick)="mapClicked($event)"  style="z-index:100; height: 650px; width:693px; position: relative;">
+            <sebm-google-map-marker
+                  *ngFor="let m of markers; let i = index"
+                  (markerClick)="clickedMarker(m.label, i)"
+                  [latitude]="m.lat"
+                  [longitude]="m.lng"
+                  [label]="m.label"
+                  [iconUrl]="m.iconUrl"
+                  [markerDraggable]="m.draggable"
+                  (dragEnd)="markerDragEnd(m, i, $event)">
+
+                <div *ngIf="i === 0">
+                    <sebm-google-map-info-window>
+                        <strong>{{origin}}</strong>
+                    </sebm-google-map-info-window>
+                </div>
+
+                <div *ngIf="i === 1">
+                    <sebm-google-map-info-window>
+                        <strong>{{destination}}</strong>
+                    </sebm-google-map-info-window>
+                </div>
+            </sebm-google-map-marker>
+
+            <!-- <sebm-google-map-direction *ngFor="let m of selectedplan.walkingPolylines" (directionsEmitter)="directionsList($event)"
+                [origin]="origin" [destination]="destination" [transitMode]="transitMode" [id]="'directionsList'">
+            </sebm-google-map-direction> -->
+
+            <!-- <sebm-google-map-marker
+                  *ngFor="let m of selectedplan.walkingPolylines"
+                  [latitude]="m.lat"
+                  [longitude]="m.lng">
+            </sebm-google-map-marker> -->
+            <div *ngFor="let section of selectedplan.sections">
+                <scm-google-map-walkingpath *ngIf="section.mode && section.mode === 'walking' || section.transfer_type === 'walking' "
+                    [originLat]="section.originLat" [originLng]="section.originLng"
+                    [destinationLat]="section.destinationLat" [destinationLng]="section.destinationLng"
+                    [id]="'directionsList'">
+                </scm-google-map-walkingpath>
+            </div>
+
+
+            <sebm-google-map-direction *ngIf="travelModeOrigin && travelModeDestination && googleTravelMode" (directionsEmitter)="directionsList($event)"
+                [origin]="travelModeOrigin" [destination]="travelModeDestination" [transitMode]="googleTravelMode" [id]="'directionsList'">
+            </sebm-google-map-direction>
+
+
+            <sebm-google-map-polyline [strokeColor]="section.polylinecolor" *ngFor="let section of selectedplan.sections">
+
+                <sebm-google-map-polyline-point *ngFor="let p of section.polylines" [latitude]="p.lat" [longitude]="p.lng">
+                </sebm-google-map-polyline-point>
+            </sebm-google-map-polyline>
+
+        </sebm-google-map>
+        <img src="assets/images/map_zoom_in.png" style="margin-left: 592px;position: relative;	margin-top: -966px; cursor: pointer;" (click)="zoomControll(true)" >
+        <img src="assets/images/map_zoom_out.png" style="margin-left: 592px;position: relative; margin-top: -858px; cursor: pointer;" (click)="zoomControll(false)">
+    </div>
+
+</div>
+</form>
